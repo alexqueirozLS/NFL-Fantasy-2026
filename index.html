@@ -643,8 +643,10 @@ function renderHeader(){
   const gT=document.getElementById('hRound');
   if(done===0){gT.innerHTML='Draft: <b>pre-draft</b> ('+state.totalRounds+'rds / '+state.numTeams+'tms)'}
   else{
-    const rp=overallToRoundPick(done+1);
-    gT.innerHTML='R'+rp.round+' P'+rp.pickInRound+' ('+done+'/'+total+')';
+    const nextOverall=done+1;
+    const rp=overallToRoundPick(nextOverall);
+    const slot=getSlotForOverall(nextOverall);
+    gT.innerHTML='R'+rp.round+' Slot '+slot+' ('+done+'/'+total+')';
   }
   const ck=document.getElementById('hClock');
   const clock=getTeamOnClock();
@@ -655,7 +657,10 @@ function renderHeader(){
   const hN=document.getElementById('hNext');
   if(state.userRosterId){
     const np=getNextPickForUser();
-    if(np){hN.style.display='';hN.innerHTML='Next: <b>R'+np.round+' P'+np.pickInRound+'</b> (#'+np.overall+')'}
+    if(np){
+      const npSlot=getSlotForOverall(np.overall);
+      hN.style.display='';hN.innerHTML='Your Next: <b>R'+np.round+' Slot '+npSlot+'</b> (#'+np.overall+')';
+    }
     else{hN.style.display='none'}
   }else{hN.style.display='none'}
 }
@@ -842,7 +847,7 @@ function renderStrategy(){
         bestByPos[pos]={player:best,adpDiff,value:adpDiff>2?'Excelente valor':adpDiff>0?'Bom valor':adpDiff>-2?'Justo':'Reach'};
       }
     });
-    html+='<div class="strat-section"><h4>🎯 Melhores Opções no Pick #'+pickOverall+' (R'+nextPick.round+'P'+nextPick.pickInRound+')</h4>';
+    html+='<div class="strat-section"><h4>🎯 Melhores Opções no Pick #'+pickOverall+' (R'+nextPick.round+' Slot '+getSlotForOverall(pickOverall)+')</h4>';
     Object.entries(bestByPos).sort((a,b)=>(b[1].player.proj_pts||0)-(a[1].player.proj_pts||0)).forEach(([pos,{player,adpDiff,value}])=>{
       const pc=POS_CLR[pos]||'ac';
       html+='<div class="strat-item">';
