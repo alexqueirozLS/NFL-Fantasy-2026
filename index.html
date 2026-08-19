@@ -534,20 +534,20 @@ function startPolling(){
 }
 
 /* ═══════════════════════════════════════ */
-/* DRAFT MATH (SNAKE DRAFT - FIXED)       */
+/* DRAFT MATH (LINEAR - reversal_round=0) */
 /* ═══════════════════════════════════════ */
 function overallToRoundPick(overall){
   const t=state.numTeams;
   const round=Math.ceil(overall/t);
   const pos=(overall-1)%t;
-  const pickInRound=round%2===1?pos+1:t-pos;
+  const pickInRound=pos+1;
   return{round,pickInRound};
 }
 
 function getSlotForOverall(overall){
-  const{round,pickInRound}=overallToRoundPick(overall);
-  if(round%2===1)return pickInRound;
-  else return state.numTeams-pickInRound+1;
+  const t=state.numTeams;
+  const pos=(overall-1)%t;
+  return pos+1;
 }
 
 function getTeamOnClock(){
