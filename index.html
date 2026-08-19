@@ -4,106 +4,134 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NFL Fantasy 2026 Draft Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0d1117;--s1:#161b22;--s2:#21262d;--bd:#30363d;--tx:#c9d1d9;--dim:#8b949e;--ac:#58a6ff;
---t1:#ff6b6b;--t2:#ffa94d;--t3:#ffd43b;--t4:#69db7c;--t5:#74c0fc;--t6:#b197fc;--t7:#f783ac;
---qb:#e64980;--rb:#20c997;--wr:#339af0;--te:#fcc419;--k:#868e96;--ds:#ae3ec9}
-body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;line-height:1.3}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--bd);border-radius:3px}
+:root{
+--bg:#0a0e1a;--s1:#111827;--s2:#1e293b;--s3:#334155;
+--bd:#1e293b;--bd2:#334155;
+--tx:#e2e8f0;--tx2:#94a3b8;--dim:#64748b;
+--ac:#3b82f6;--ac2:#60a5fa;--ac3:#1d4ed8;
+--g1:#10b981;--g2:#34d399;
+--r1:#ef4444;--r2:#f87171;
+--y1:#f59e0b;--y2:#fbbf24;
+--t1:#ef4444;--t2:#f97316;--t3:#eab308;--t4:#22c55e;--t5:#3b82f6;--t6:#8b5cf6;--t7:#ec4899;
+--qb:#ec4899;--rb:#10b981;--wr:#3b82f6;--te:#f59e0b;--k:#6b7280;--ds:#a855f7;
+--glow:0 0 20px rgba(59,130,246,.15);
+--glow-accent:0 0 30px rgba(59,130,246,.2);
+}
+body{background:var(--bg);color:var(--tx);font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:12px;line-height:1.4;min-height:100vh}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:10px}::-webkit-scrollbar-thumb:hover{background:var(--dim)}
 
-/* HEADER */
-.hdr{position:sticky;top:0;z-index:100;background:var(--s1);border-bottom:1px solid var(--bd);padding:8px 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.hdr-title{font-size:15px;font-weight:700;color:var(--ac);white-space:nowrap}
-.hdr-title small{font-weight:400;color:var(--dim);font-size:11px}
-.hdr-center{display:flex;gap:12px;align-items:center;flex:1;justify-content:center;flex-wrap:wrap}
-.hdr-info{background:var(--s2);padding:4px 10px;border-radius:6px;font-size:11px;white-space:nowrap}
-.hdr-info b{color:var(--ac)}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 5px rgba(59,130,246,.2)}50%{box-shadow:0 0 20px rgba(59,130,246,.4)}}
+@keyframes slideDown{from{opacity:0;max-height:0}to{opacity:1;max-height:500px}}
+
+.hdr{position:sticky;top:0;z-index:100;background:linear-gradient(135deg,var(--s1) 0%,#0f172a 100%);border-bottom:1px solid var(--bd);padding:10px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;backdrop-filter:blur(10px)}
+.hdr-title{font-size:17px;font-weight:800;background:linear-gradient(135deg,var(--ac2),#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;white-space:nowrap;letter-spacing:-.3px}
+.hdr-title small{font-weight:500;background:linear-gradient(135deg,var(--tx2),var(--dim));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-size:12px;letter-spacing:0}
+.hdr-center{display:flex;gap:8px;align-items:center;flex:1;justify-content:center;flex-wrap:wrap}
+.hdr-info{background:rgba(30,41,59,.8);padding:5px 12px;border-radius:8px;font-size:11px;white-space:nowrap;border:1px solid var(--bd);backdrop-filter:blur(4px);transition:all .2s}
+.hdr-info:hover{border-color:var(--ac);box-shadow:var(--glow)}
+.hdr-info b{color:var(--ac2);font-weight:700}
 .hdr-right{display:flex;gap:8px;align-items:center}
-.sync{font-size:10px;padding:3px 8px;border-radius:10px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
-.sync.off{background:var(--s2);color:var(--dim)}.sync.ld{background:#3d2e00;color:#f0b429;animation:pulse 1.5s infinite}
-.sync.ok{background:#0d2818;color:#3fb950}.sync.er{background:#3d1418;color:#f85149}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.sync{font-size:10px;padding:4px 10px;border-radius:12px;font-weight:600;display:inline-flex;align-items:center;gap:5px;letter-spacing:.3px;transition:all .3s}
+.sync.off{background:rgba(30,41,59,.8);color:var(--dim);border:1px solid var(--bd)}
+.sync.ld{background:rgba(245,158,11,.15);color:var(--y2);border:1px solid rgba(245,158,11,.3);animation:pulse-glow 2s infinite}
+.sync.ok{background:rgba(16,185,129,.15);color:var(--g2);border:1px solid rgba(16,185,129,.3)}
+.sync.er{background:rgba(239,68,68,.15);color:var(--r2);border:1px solid rgba(239,68,68,.3)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
-.sync.ld .dot{animation:pulse 1s infinite}
+.sync.ld .dot{animation:pulse 1.2s infinite}
 
-/* CONNECT BAR */
-.conn{background:var(--s1);border-bottom:1px solid var(--bd);padding:6px 12px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}
-.conn input{flex:1;min-width:200px;background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:5px 10px;color:var(--tx);font-size:12px}
-.conn input::placeholder{color:#484f58}
-.conn select{background:var(--bg);border:1px solid var(--bd);border-radius:6px;padding:5px 8px;color:var(--tx);font-size:11px;max-width:180px}
-.btn{padding:5px 12px;border-radius:6px;border:none;font-size:11px;font-weight:600;cursor:pointer}
-.btn-g{background:#238636;color:#fff}.btn-r{background:#da3633;color:#fff}.btn-s{background:var(--s2);color:var(--tx);border:1px solid var(--bd)}
+.conn{background:linear-gradient(180deg,var(--s1),rgba(17,24,39,.95));border-bottom:1px solid var(--bd);padding:8px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.conn input{flex:1;min-width:200px;background:rgba(15,23,42,.8);border:1px solid var(--bd2);border-radius:8px;padding:6px 12px;color:var(--tx);font-size:12px;font-family:inherit;transition:all .2s}
+.conn input:focus{outline:none;border-color:var(--ac);box-shadow:0 0 0 3px rgba(59,130,246,.15)}
+.conn input::placeholder{color:var(--dim)}
+.conn select{background:rgba(15,23,42,.8);border:1px solid var(--bd2);border-radius:8px;padding:6px 10px;color:var(--tx);font-size:11px;font-family:inherit;max-width:200px;transition:all .2s}
+.conn select:focus{outline:none;border-color:var(--ac)}
+.btn{padding:6px 14px;border-radius:8px;border:none;font-size:11px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .2s;letter-spacing:.3px}
+.btn:active{transform:scale(.97)}
+.btn-g{background:linear-gradient(135deg,#059669,#10b981);color:#fff;box-shadow:0 2px 8px rgba(16,185,129,.3)}.btn-g:hover{box-shadow:0 4px 16px rgba(16,185,129,.4);transform:translateY(-1px)}
+.btn-r{background:linear-gradient(135deg,#dc2626,#ef4444);color:#fff;box-shadow:0 2px 8px rgba(239,68,68,.3)}.btn-r:hover{box-shadow:0 4px 16px rgba(239,68,68,.4);transform:translateY(-1px)}
+.btn-s{background:var(--s2);color:var(--tx);border:1px solid var(--bd2)}.btn-s:hover{background:var(--s3)}
 
-/* MAIN 3-COL */
-.main{display:grid;grid-template-columns:180px 1fr 200px;gap:0;min-height:calc(100vh - 80px)}
-.col{overflow-y:auto;max-height:calc(100vh - 80px)}
-.col-left{border-right:1px solid var(--bd);background:var(--s1)}
-.col-right{border-left:1px solid var(--bd);background:var(--s1)}
-.col-center{background:var(--bg);padding:8px}
+.main{display:grid;grid-template-columns:190px 1fr 210px;gap:0;min-height:calc(100vh - 90px)}
+.col{overflow-y:auto;max-height:calc(100vh - 90px)}
+.col-left{border-right:1px solid var(--bd);background:linear-gradient(180deg,var(--s1),var(--bg))}
+.col-right{border-left:1px solid var(--bd);background:linear-gradient(180deg,var(--s1),var(--bg))}
+.col-center{background:var(--bg);padding:10px}
 
-/* LEFT - MY ROSTER */
-.roster-hdr{padding:8px 10px;border-bottom:1px solid var(--bd);font-weight:700;font-size:12px;color:var(--ac);position:sticky;top:0;background:var(--s1);z-index:2}
-.roster-slot{display:flex;align-items:center;padding:5px 10px;border-bottom:1px solid rgba(48,54,61,.4);gap:6px;font-size:11px}
-.roster-pos{font-weight:700;min-width:36px;color:var(--dim);text-transform:uppercase;font-size:10px}
+.roster-hdr{padding:10px 12px;border-bottom:1px solid var(--bd);font-weight:800;font-size:11px;color:var(--ac2);position:sticky;top:0;background:linear-gradient(135deg,var(--s1),rgba(30,41,59,.95));z-index:2;letter-spacing:1px;text-transform:uppercase;backdrop-filter:blur(10px)}
+.roster-slot{display:flex;align-items:center;padding:6px 12px;border-bottom:1px solid rgba(30,41,59,.5);gap:6px;font-size:11px;transition:all .2s;position:relative}
+.roster-slot:hover{background:rgba(59,130,246,.05)}
+.roster-slot::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--bd);transition:all .2s}
+.roster-slot:has(.roster-player:not(.roster-empty))::before{background:var(--g1)}
+.roster-pos{font-weight:800;min-width:32px;color:var(--dim);text-transform:uppercase;font-size:9px;letter-spacing:.5px}
 .roster-player{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
-.roster-empty{color:#484f58;font-style:italic}
-.roster-team{font-size:9px;padding:1px 4px;background:var(--s2);border-radius:3px;color:var(--dim)}
-.roster-picks{padding:8px 10px;border-top:1px solid var(--bd);font-size:10px;color:var(--dim)}
-.roster-picks b{color:var(--te)}
+.roster-empty{color:var(--dim);font-style:italic;opacity:.5}
+.roster-team{font-size:9px;padding:2px 5px;background:rgba(30,41,59,.8);border-radius:4px;color:var(--dim);font-weight:600;border:1px solid var(--bd)}
+.roster-picks{padding:10px 12px;border-top:1px solid var(--bd);font-size:10px;color:var(--dim);position:sticky;bottom:0;background:linear-gradient(180deg,rgba(17,24,39,.95),var(--s1));backdrop-filter:blur(10px)}
+.roster-picks b{color:var(--y2);font-weight:700}
 
-/* CENTER - DRAFT BOARD */
-.board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.board-panel{background:var(--s1);border:1px solid var(--bd);border-radius:6px;overflow:hidden;display:flex;flex-direction:column}
-.board-panel-hdr{padding:6px 8px;font-weight:700;font-size:11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;position:sticky;top:0;background:var(--s1);z-index:1}
-.board-panel-hdr .pb{padding:2px 6px;border-radius:3px;font-size:9px;font-weight:800}
-.pb-qb{background:var(--qb);color:#000}.pb-rb{background:var(--rb);color:#000}.pb-wr{background:var(--wr);color:#000}
-.pb-te{background:var(--te);color:#000}.pb-k{background:var(--k);color:#000}.pb-ds{background:var(--ds);color:#000}
-.board-panel-body{overflow-y:auto;max-height:calc((100vh - 140px)/2 - 20px);flex:1}
-.tier-hdr{display:flex;align-items:center;gap:5px;padding:4px 8px;background:var(--s2);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--dim);border-bottom:1px solid var(--bd)}
-.tdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.prow{display:flex;align-items:center;padding:3px 8px;gap:5px;border-bottom:1px solid rgba(48,54,61,.3);font-size:11px;cursor:pointer}
-.prow:hover{background:rgba(88,166,255,.05)}
-.prow.done{opacity:.3}.prow.done .pn{text-decoration:line-through}
-.pchk{width:14px;height:14px;border-radius:3px;border:1.5px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;cursor:pointer}
-.pchk.on{background:var(--ac);border-color:var(--ac)}
-.pn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
-.ptm{font-size:9px;padding:1px 4px;background:var(--s2);border-radius:3px;color:var(--dim);font-weight:600}
+.board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.board-panel{background:linear-gradient(135deg,var(--s1),rgba(30,41,59,.5));border:1px solid var(--bd);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:all .3s}
+.board-panel:hover{border-color:var(--bd2);box-shadow:var(--glow)}
+.board-panel-hdr{padding:8px 10px;font-weight:800;font-size:11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;position:sticky;top:0;background:linear-gradient(135deg,var(--s1),rgba(30,41,59,.95));z-index:1;backdrop-filter:blur(10px);letter-spacing:.5px}
+.board-panel-hdr .pb{padding:3px 8px;border-radius:5px;font-size:9px;font-weight:900;letter-spacing:.5px}
+.pb-qb{background:linear-gradient(135deg,var(--qb),#d946ef);color:#fff}.pb-rb{background:linear-gradient(135deg,var(--rb),#059669);color:#fff}
+.pb-wr{background:linear-gradient(135deg,var(--wr),#2563eb);color:#fff}.pb-te{background:linear-gradient(135deg,var(--te),#d97706);color:#fff}
+.pb-k{background:linear-gradient(135deg,#475569,#64748b);color:#fff}.pb-ds{background:linear-gradient(135deg,var(--ds),#7c3aed);color:#fff}
+.board-panel-body{overflow-y:auto;max-height:calc((100vh - 160px)/2 - 24px);flex:1}
+.tier-hdr{display:flex;align-items:center;gap:6px;padding:5px 10px;background:rgba(30,41,59,.5);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--dim);border-bottom:1px solid var(--bd)}
+.tdot{width:8px;height:8px;border-radius:50%;flex-shrink:0;box-shadow:0 0 6px currentColor}
+.prow{display:flex;align-items:center;padding:4px 10px;gap:6px;border-bottom:1px solid rgba(30,41,59,.3);font-size:11px;cursor:pointer;transition:all .15s;position:relative}
+.prow:hover{background:rgba(59,130,246,.08)}
+.prow.done{opacity:.25}.prow.done .pn{text-decoration:line-through;color:var(--dim)}
+.pchk{width:16px;height:16px;border-radius:4px;border:2px solid var(--bd2);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:9px;cursor:pointer;transition:all .2s}
+.pchk:hover{border-color:var(--ac)}
+.pchk.on{background:linear-gradient(135deg,var(--ac),var(--ac3));border-color:var(--ac);box-shadow:0 0 8px rgba(59,130,246,.4)}
+.pn{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600;transition:color .2s}
+.ptm{font-size:9px;padding:2px 5px;background:rgba(30,41,59,.8);border-radius:4px;color:var(--dim);font-weight:700;border:1px solid var(--bd)}
 
-/* RIGHT - BEST AVAILABLE */
-.bpa-hdr{padding:8px 10px;border-bottom:1px solid var(--bd);font-weight:700;font-size:12px;color:var(--ac);position:sticky;top:0;background:var(--s1);z-index:2}
-.bpa-row{display:flex;align-items:center;padding:4px 10px;gap:6px;border-bottom:1px solid rgba(48,54,61,.3);font-size:11px}
-.bpa-rank{min-width:18px;color:var(--dim);font-weight:700;font-size:10px;text-align:right}
-.bpa-pos{font-size:9px;font-weight:800;padding:1px 4px;border-radius:3px;min-width:26px;text-align:center}
+.bpa-hdr{padding:10px 12px;border-bottom:1px solid var(--bd);font-weight:800;font-size:11px;color:var(--ac2);position:sticky;top:0;background:linear-gradient(135deg,var(--s1),rgba(30,41,59,.95));z-index:2;letter-spacing:1px;text-transform:uppercase;backdrop-filter:blur(10px)}
+.bpa-row{display:flex;align-items:center;padding:5px 10px;gap:6px;border-bottom:1px solid rgba(30,41,59,.3);font-size:11px;transition:all .15s}
+.bpa-row:hover{background:rgba(59,130,246,.05)}
+.bpa-rank{min-width:18px;color:var(--dim);font-weight:800;font-size:10px;text-align:right}
+.bpa-pos{font-size:9px;font-weight:900;padding:2px 5px;border-radius:4px;min-width:26px;text-align:center;letter-spacing:.3px}
 .bpa-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
-.bpa-adp{font-size:9px;min-width:24px;text-align:right;font-weight:700}
-.bpa-adp.steal{color:#3fb950}.bpa-adp.fair{color:#f0b429}.bpa-adp.reach{color:#f85149}
-.bpa-tm{font-size:9px;color:var(--dim)}
-.prow .adp-tag{font-size:8px;padding:1px 4px;border-radius:3px;font-weight:700;margin-left:4px}
-.adp-steal{background:#0d2818;color:#3fb950}.adp-fair{background:#3d2e00;color:#f0b429}.adp-reach{background:#3d1418;color:#f85149}
+.bpa-adp{font-size:9px;min-width:24px;text-align:right;font-weight:800;padding:2px 4px;border-radius:4px}
+.bpa-adp.steal{background:rgba(16,185,129,.15);color:var(--g2)}.bpa-adp.fair{background:rgba(245,158,11,.15);color:var(--y2)}.bpa-adp.reach{background:rgba(239,68,68,.15);color:var(--r2)}
+.bpa-tm{font-size:9px;color:var(--dim);font-weight:600}
+.prow .adp-tag{font-size:8px;padding:2px 5px;border-radius:4px;font-weight:800;letter-spacing:.3px}
+.adp-steal{background:rgba(16,185,129,.15);color:var(--g2)}.adp-fair{background:rgba(245,158,11,.15);color:var(--y2)}.adp-reach{background:rgba(239,68,68,.15);color:var(--r2)}
 
-/* STRATEGY PANEL */
-.strat{background:var(--s1);border:1px solid var(--bd);border-radius:6px;margin-top:8px;overflow:hidden}
-.strat-hdr{padding:6px 8px;font-weight:700;font-size:11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;background:var(--s2)}
+.strat{background:linear-gradient(135deg,var(--s1),rgba(30,41,59,.5));border:1px solid var(--bd);border-radius:10px;margin-top:10px;overflow:hidden;transition:all .3s}
+.strat:hover{border-color:var(--bd2);box-shadow:var(--glow)}
+.strat-hdr{padding:8px 12px;font-weight:800;font-size:11px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--s2),rgba(30,41,59,.8));letter-spacing:.5px}
 .strat-hdr .icon{font-size:14px}
-.strat-body{padding:8px;font-size:11px;line-height:1.5}
-.strat-section{margin-bottom:8px}
-.strat-section h4{font-size:10px;color:var(--ac);text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-.strat-item{display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid rgba(48,54,61,.3)}
-.strat-item .pos{font-size:9px;font-weight:800;padding:1px 4px;border-radius:3px;min-width:26px;text-align:center}
-.strat-item .val{color:#3fb950;font-weight:700;font-size:10px}
-.strat-alert{background:rgba(248,81,73,.1);border:1px solid rgba(248,81,73,.3);border-radius:4px;padding:6px;margin-top:6px;font-size:10px;color:#f85149}
-.strat-tip{background:rgba(63,185,80,.1);border:1px solid rgba(63,185,80,.3);border-radius:4px;padding:6px;margin-top:6px;font-size:10px;color:#3fb950}
+.strat-body{padding:10px;font-size:11px;line-height:1.6}
+.strat-section{margin-bottom:10px}
+.strat-section h4{font-size:10px;color:var(--ac2);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;font-weight:800}
+.strat-item{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(30,41,59,.4);transition:all .2s}
+.strat-item:last-child{border-bottom:none}
+.strat-item:hover{padding-left:4px}
+.strat-item .pos{font-size:9px;font-weight:900;padding:2px 5px;border-radius:4px;min-width:26px;text-align:center;letter-spacing:.3px}
+.strat-item .val{color:var(--g2);font-weight:800;font-size:10px;letter-spacing:.3px}
+.strat-alert{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.25);border-radius:6px;padding:8px;margin-top:6px;font-size:10px;color:var(--r2);font-weight:600}
+.strat-tip{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);border-radius:6px;padding:8px;margin-top:6px;font-size:10px;color:var(--ac2)}
 
-/* BOTTOM BAR */
-.bbar{position:fixed;bottom:0;left:0;right:0;background:var(--s1);border-top:1px solid var(--bd);padding:6px 12px;display:flex;gap:6px;overflow-x:auto;z-index:100;white-space:nowrap}
-.bbar-label{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.5px;padding:3px 0;flex-shrink:0}
-.bpick{font-size:10px;padding:3px 8px;background:var(--s2);border-radius:4px;flex-shrink:0}
-.bpick b{color:var(--ac)}
+.bbar{position:fixed;bottom:0;left:0;right:0;background:linear-gradient(135deg,var(--s1),rgba(15,23,42,.98));border-top:1px solid var(--bd);padding:6px 14px;display:flex;gap:6px;overflow-x:auto;z-index:100;white-space:nowrap;backdrop-filter:blur(10px)}
+.bbar-label{font-size:10px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:1px;padding:3px 0;flex-shrink:0}
+.bpick{font-size:10px;padding:4px 10px;background:rgba(30,41,59,.8);border-radius:6px;flex-shrink:0;border:1px solid var(--bd);transition:all .2s}
+.bpick:hover{border-color:var(--ac);box-shadow:var(--glow)}
+.bpick b{color:var(--ac2);font-weight:800}
 .bpick span{color:var(--dim)}
 
-/* MOBILE */
-.mob-toggle{display:none;position:fixed;bottom:40px;right:10px;z-index:200;background:var(--ac);color:#000;border:none;border-radius:50%;width:40px;height:40px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.mob-toggle{display:none;position:fixed;bottom:44px;right:12px;z-index:200;background:linear-gradient(135deg,var(--ac),var(--ac3));color:#fff;border:none;border-radius:14px;width:44px;height:44px;font-size:14px;font-weight:800;cursor:pointer;box-shadow:0 4px 16px rgba(59,130,246,.4);transition:all .2s;letter-spacing:.5px}
+.mob-toggle:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(59,130,246,.5)}
 @media(max-width:900px){
   .main{grid-template-columns:1fr;grid-template-rows:auto 1fr auto}
   .col-left,.col-right{max-height:none;border:none;border-bottom:1px solid var(--bd)}
@@ -117,9 +145,9 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSyst
 </head>
 <body>
 <div class="hdr">
-  <div class="hdr-title">NFL Fantasy 2026 <small>Draft Board</small></div>
+  <div class="hdr-title">NFL FANTASY 2026 <small>Draft Board</small></div>
   <div class="hdr-center">
-    <div class="hdr-info" id="hRound">Round: --</div>
+    <div class="hdr-info" id="hRound">Draft: --</div>
     <div class="hdr-info" id="hClock">Clock: --</div>
     <div class="hdr-info" id="hNext" style="display:none">Next: --</div>
   </div>
@@ -130,7 +158,7 @@ body{background:var(--bg);color:var(--tx);font-family:-apple-system,BlinkMacSyst
 <div class="conn">
   <input id="leagueIn" placeholder="League ID" value="1382404011495292928">
   <select id="userSel"><option value="">Select your team...</option></select>
-  <button class="btn btn-g" id="connBtn" onclick="doConnect()">Ligar</button>
+  <button class="btn btn-g" id="connBtn" onclick="doConnect()">LIGAR</button>
   <button class="btn btn-r" id="discBtn" onclick="doDisconnect()" style="display:none">X</button>
 </div>
 <div class="main">
@@ -159,12 +187,9 @@ const API='https://api.sleeper.app/v1';
 const LEAGUE_DEFAULT='1382404011495292928';
 const SLOTS=['QB','RB','RB','WR','WR','TE','FLEX','FLEX','K','DEF','BN','BN','BN','BN','BN'];
 const POS_CLR={QB:'qb',RB:'rb',WR:'wr',TE:'te',K:'k',DST:'ds',DEF:'ds'};
-const TCLR=['','#ff6b6b','#ffa94d','#ffd43b','#69db7c','#74c0fc','#b197fc','#f783ac'];
+const TCLR=['','#ef4444','#f97316','#eab308','#22c55e','#3b82f6','#8b5cf6','#ec4899'];
 const PAGES=['col-left','col-center','col-right'];
 
-/* ═══════════════════════════════════════ */
-/* CURATED PLAYERS                         */
-/* ═══════════════════════════════════════ */
 const C=[
 {n:"Josh Allen",t:"BUF",p:"QB",ti:1,r:1},{n:"Lamar Jackson",t:"BAL",p:"QB",ti:1,r:2},
 {n:"Jayden Daniels",t:"WSH",p:"QB",ti:2,r:3},{n:"Drake Maye",t:"NE",p:"QB",ti:2,r:4},
@@ -312,7 +337,7 @@ async function doConnect(){
 
     populateUsers();
     setSync('ok','Ligado');
-    document.getElementById('connBtn').textContent='Ligar';
+    document.getElementById('connBtn').textContent='LIGAR';
     document.getElementById('discBtn').style.display='';
     document.getElementById('discBtn').onclick=doDisconnect;
 
@@ -323,7 +348,7 @@ async function doConnect(){
   }catch(e){
     console.error('Connect error:',e);
     setSync('er','Erro: '+e.message);
-    document.getElementById('connBtn').textContent='Ligar';
+    document.getElementById('connBtn').textContent='LIGAR';
   }
 }
 
@@ -334,7 +359,7 @@ function doDisconnect(){
   setSync('off','Offline');
   document.getElementById('discBtn').style.display='none';
   document.getElementById('userSel').innerHTML='<option value="">Select your team...</option>';
-  document.getElementById('hRound').textContent='Round: --';
+  document.getElementById('hRound').textContent='Draft: --';
   document.getElementById('hClock').textContent='Clock: --';
   document.getElementById('hNext').style.display='none';
   renderAll();
@@ -386,7 +411,7 @@ function startPolling(){
 }
 
 /* ═══════════════════════════════════════ */
-/* DRAFT MATH                             */
+/* DRAFT MATH (SNAKE DRAFT - FIXED)       */
 /* ═══════════════════════════════════════ */
 function overallToRoundPick(overall){
   const t=state.numTeams;
@@ -396,30 +421,33 @@ function overallToRoundPick(overall){
   return{round,pickInRound};
 }
 
+function getSlotForOverall(overall){
+  const{round,pickInRound}=overallToRoundPick(overall);
+  if(round%2===1)return pickInRound;
+  else return state.numTeams-pickInRound+1;
+}
+
 function getTeamOnClock(){
   if(!state.draftId||state.draftPicks.length===0)return null;
   const next=state.draftPicks.length+1;
   const rp=overallToRoundPick(next);
-  const slotPos=(next-1)%state.numTeams;
-  const actualSlot=state.numTeams-slotPos;
-  const rosterId=state.slotToRoster[String(actualSlot)];
+  const slot=getSlotForOverall(next);
+  const rosterId=state.slotToRoster[String(slot)];
   if(!rosterId)return null;
   const user=state.users.find(u=>{
     const r=state.rosters.find(r=>r.roster_id===rosterId);
     return r&&r.owner_id===u.user_id;
   });
-  return{overall:next,...rp,teamName:user?(user.metadata&&user.metadata.team_name||user.display_name):'?',rosterId};
+  return{overall:next,...rp,teamName:user?(user.metadata&&user.metadata.team_name||user.display_name):'?',rosterId,slot};
 }
 
 function getNextPickForUser(){
   if(!state.userRosterId)return null;
   const startRd=state.draftPicks.length+1;
   for(let i=startRd;i<=state.totalRounds*state.numTeams;i++){
-    const rp=overallToRoundPick(i);
-    const slotPos=(i-1)%state.numTeams;
-    const actualSlot=state.numTeams-slotPos;
-    const rosterId=state.slotToRoster[String(actualSlot)];
-    if(rosterId===state.userRosterId)return{overall:i,...rp};
+    const slot=getSlotForOverall(i);
+    const rosterId=state.slotToRoster[String(slot)];
+    if(rosterId===state.userRosterId)return{overall:i,...overallToRoundPick(i)};
   }
   return null;
 }
@@ -428,9 +456,8 @@ function getUserPicks(){
   if(!state.userRosterId)return[];
   const picks=[];
   for(let i=1;i<=state.totalRounds*state.numTeams;i++){
-    const slotPos=(i-1)%state.numTeams;
-    const actualSlot=state.numTeams-slotPos;
-    const rosterId=state.slotToRoster[String(actualSlot)];
+    const slot=getSlotForOverall(i);
+    const rosterId=state.slotToRoster[String(slot)];
     if(rosterId===state.userRosterId)picks.push(i);
   }
   return picks;
@@ -498,7 +525,7 @@ function renderHeader(){
   }
   const ck=document.getElementById('hClock');
   const clock=getTeamOnClock();
-  if(clock){ck.innerHTML='Clock: <b>'+clock.teamName+'</b>'}
+  if(clock){ck.innerHTML='Clock: <b>'+clock.teamName+'</b> (Slot '+clock.slot+')'}
   else if(done===0){ck.innerHTML='Clock: <b>--</b>'}
   else{ck.innerHTML='Draft: <b>Completo!</b>'}
 
@@ -562,7 +589,7 @@ function renderBoard(){
       players.forEach(p=>{if(!tiers[p.ti])tiers[p.ti]=[];tiers[p.ti].push(p)});
       Object.keys(tiers).sort((a,b)=>a-b).forEach(t=>{
         const tp=tiers[t];
-        html+='<div class="tier-hdr"><span class="tdot" style="background:'+TCLR[t]+'"></span>'+TIERS[t]+' ('+tp.length+')</div>';
+        html+='<div class="tier-hdr"><span class="tdot" style="background:'+TCLR[t]+';color:'+TCLR[t]+'"></span>'+TIERS[t]+' ('+tp.length+')</div>';
         tp.forEach((p,pi)=>{
           const gi=PLAYERS.indexOf(p);
           const d=isDrafted(p);
@@ -578,7 +605,7 @@ function renderBoard(){
           html+='<div class="prow'+(d?' done':'')+'" onclick="toggleP('+gi+')">';
           html+='<div class="pchk'+(d?' on':'')+'">'+(d?'✓':'')+'</div>';
           html+='<span class="pn">'+p.n+'</span>';
-          if(p.proj_pts!=null)html+='<span style="font-size:9px;color:#3fb950;white-space:nowrap">'+Math.round(p.proj_pts)+'</span>';
+          if(p.proj_pts!=null)html+='<span style="font-size:9px;color:var(--g2);white-space:nowrap;font-weight:700">'+Math.round(p.proj_pts)+'</span>';
           html+=adpTag;
           html+='<span class="ptm">'+p.t+'</span>';
           html+='</div>';
@@ -593,7 +620,6 @@ function renderBoard(){
 function renderBPA(){
   const el=document.getElementById('bpaList');
   const available=PLAYERS.filter(p=>!isDrafted(p));
-  const posRank={};
   ['QB','RB','WR','TE','K','DST'].forEach(pos=>{
     let c=1;
     PLAYERS.filter(p=>p.p===pos).forEach(p=>{
@@ -621,14 +647,14 @@ function renderBPA(){
     html+='<span class="bpa-tm">'+p.t+'</span>';
     html+='</div>';
   });
-  if(!available.length)html='<div style="padding:20px;text-align:center;color:#484f58">Todos drafteados!</div>';
+  if(!available.length)html='<div style="padding:20px;text-align:center;color:var(--dim)">Todos drafteados!</div>';
   el.innerHTML=html;
 }
 
 function renderBottomBar(){
   const el=document.getElementById('bbarPicks');
   if(!state.draftPicks.length){
-    el.innerHTML='<span style="color:#484f58">Nenhuma pick ainda — draft não começou</span>';
+    el.innerHTML='<span style="color:var(--dim)">Nenhuma pick ainda — draft não começou</span>';
     return;
   }
   const recent=state.draftPicks.slice(-15);
@@ -657,7 +683,6 @@ function renderStrategy(){
   const available=PLAYERS.filter(p=>!isDrafted(p));
   const drafted=state.draftPicks;
 
-  // Position scarcity analysis
   const posDrafted={QB:0,RB:0,WR:0,TE:0,K:0,DST:0};
   const posAvailable={QB:0,RB:0,WR:0,TE:0,DST:0};
   ['QB','RB','WR','TE','K','DST'].forEach(pos=>{
@@ -669,8 +694,6 @@ function renderStrategy(){
   });
 
   let html='';
-
-  // Position run alerts
   const totalPicks=drafted.length;
   if(totalPicks>0){
     const alerts=[];
@@ -678,7 +701,6 @@ function renderStrategy(){
     if(posDrafted.RB>=8&&posAvailable.RB>15)alerts.push('RB run em andamento - considere agarrar um agora');
     if(posDrafted.WR>=8&&posAvailable.WR>20)alerts.push('WR run em andamento - muitos ainda disponíveis');
     if(posDrafted.TE>=3&&posAvailable.TE>5)alerts.push('TE run em andamento - elite acabando');
-
     if(alerts.length){
       html+='<div class="strat-section"><h4>⚠️ Position Runs</h4>';
       alerts.forEach(a=>html+='<div class="strat-alert">'+a+'</div>');
@@ -686,7 +708,6 @@ function renderStrategy(){
     }
   }
 
-  // Suggested picks at next pick
   if(nextPick){
     const pickOverall=nextPick.overall;
     const bestByPos={};
@@ -698,7 +719,6 @@ function renderStrategy(){
         bestByPos[pos]={player:best,adpDiff,value:adpDiff>2?'Excelente valor':adpDiff>0?'Bom valor':adpDiff>-2?'Justo':'Reach'};
       }
     });
-
     html+='<div class="strat-section"><h4>🎯 Melhores Opções no Pick #'+pickOverall+' (R'+nextPick.round+'P'+nextPick.pickInRound+')</h4>';
     Object.entries(bestByPos).sort((a,b)=>(b[1].player.proj_pts||0)-(a[1].player.proj_pts||0)).forEach(([pos,{player,adpDiff,value}])=>{
       const pc=POS_CLR[pos]||'ac';
@@ -711,7 +731,6 @@ function renderStrategy(){
     html+='</div>';
   }
 
-  // Trade targets
   if(totalPicks>0&&totalPicks<state.numTeams*4){
     const myPicks=state.draftPicks.filter(p=>p.roster_id===state.userRosterId);
     const myPositions={};
@@ -719,13 +738,11 @@ function renderStrategy(){
       const sp=state.sleeperPlayers?state.sleeperPlayers[String(p.player_id)]:null;
       if(sp)myPositions[sp.position]=(myPositions[sp.position]||0)+1;
     });
-
     const tradeTargets=[];
     if(!myPositions.QB)tradeTargets.push('QB backup rodada 6-8');
     if((myPositions.RB||0)<2)tradeTargets.push('RB2 rodada 3-5');
     if((myPositions.WR||0)<2)tradeTargets.push('WR2 rodada 2-4');
     if(!myPositions.TE)tradeTargets.push('TE rodada 5-7');
-
     if(tradeTargets.length){
       html+='<div class="strat-section"><h4>🔄 Trade Targets</h4>';
       tradeTargets.forEach(t=>html+='<div class="strat-item"><span>'+t+'</span></div>');
@@ -733,24 +750,23 @@ function renderStrategy(){
     }
   }
 
-  // Position scarcity summary
   html+='<div class="strat-section"><h4>📊 Escassez por Posição</h4>';
   ['QB','RB','WR','TE'].forEach(pos=>{
     const drafted=posDrafted[pos];
     const avail=posAvailable[pos];
     const total=drafted+avail;
     const pctDrafted=total>0?Math.round(drafted/total*100):0;
-    const color=pctDrafted>60?'#f85149':pctDrafted>40?'#f0b429':'#3fb950';
+    const color=pctDrafted>60?'var(--r2)':pctDrafted>40?'var(--y2)':'var(--g2)';
     html+='<div class="strat-item">';
     html+='<span class="pos pb-'+(POS_CLR[pos]||'ac')+'">'+pos+'</span>';
     html+='<span style="flex:1">'+drafted+'/'+total+' drafteados ('+pctDrafted+'%)</span>';
-    html+='<span style="color:'+color+';font-weight:700">'+avail+' restantes</span>';
+    html+='<span style="color:'+color+';font-weight:800">'+avail+' restantes</span>';
     html+='</div>';
   });
   html+='</div>';
 
-  // Value recommendations
-  if(available.length){
+  if(available.length&&nextPick){
+    const pickOverall=nextPick.overall;
     const steals=available.filter(p=>p.proj_adp&&(p.proj_adp-pickOverall)>5).slice(0,3);
     if(steals.length){
       html+='<div class="strat-section"><h4>💎 Values Caindo</h4>';
@@ -766,8 +782,9 @@ function renderStrategy(){
     }
   }
 
-  el.innerHTML=html||'<div style="color:#484f58">Draft não começou ainda</div>';
+  el.innerHTML=html||'<div style="color:var(--dim)">Draft não começou ainda</div>';
 }
+
 function mobCycle(){
   state.mobPage=(state.mobPage+1)%3;
   PAGES.forEach((c,i)=>{
@@ -856,6 +873,7 @@ function calculateTiers(){
   });
   renderAll();
 }
+
 async function loadSleeperPlayers(){
   try{
     const cached=localStorage.getItem('slp_cache');
